@@ -5,6 +5,10 @@ html, body {
   padding: 0;
 }
 
+body {
+  background-color: black;
+}
+
 .blink-vid {
   display: none;
   position: absolute;
