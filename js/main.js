@@ -29,8 +29,8 @@ $(function() {
     }
 
     setInterval(function() {
-      console.log('gus time: ' + gus.currentTime);
-      console.log('kev time: ' + kev.currentTime);
+      //console.log('gus time: ' + gus.currentTime);
+      //console.log('kev time: ' + kev.currentTime);
     }, 500);
   }
 
