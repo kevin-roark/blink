@@ -2,8 +2,10 @@ $(function() {
 
   var gus = document.querySelector('#gus');
   var kev = document.querySelector('#kev');
+  var bathroom = document.querySelector('#bathroom');
+  var subway = document.querySelector('#subway');
 
-  var vids = [gus, kev];
+  var vids = [gus, kev, bathroom, subway];
   var currentVideoIndex = 0;
 
   var numMedia = vids.length;
@@ -27,11 +29,6 @@ $(function() {
       var vid = vids[i];
       vid.play();
     }
-
-    setInterval(function() {
-      //console.log('gus time: ' + gus.currentTime);
-      //console.log('kev time: ' + kev.currentTime);
-    }, 500);
   }
 
   $('body').keypress(function(event) {
