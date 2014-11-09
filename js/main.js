@@ -4,8 +4,9 @@ $(function() {
   var kev = document.querySelector('#kev');
   var bathroom = document.querySelector('#bathroom');
   var subway = document.querySelector('#subway');
+  var babysit = document.querySelector('#babysit');
 
-  var vids = [gus, kev, bathroom, subway];
+  var vids = [gus, kev, bathroom, subway, babysit];
   var currentVideoIndex = 0;
 
   var numMedia = vids.length;
