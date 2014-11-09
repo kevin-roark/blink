@@ -30,6 +30,8 @@ $(function() {
       var vid = vids[i];
       vid.play();
     }
+
+    $('.background').fadeOut(900);
   }
 
   $('body').keypress(function(event) {
