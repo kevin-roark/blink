@@ -24,6 +24,8 @@ $(function() {
   }
 
   function start(restarting) {
+    Webcam.attach('#cameraPreview');
+
     $(vids[0]).show();
 
     for (var i = 0; i < vids.length; i++) {
@@ -49,6 +51,12 @@ $(function() {
     }
 
     $(vids[currentVideoIndex]).show();
+  }
+
+  function takeSnapshot() {
+    Webcam.snap(function(data_uri) {
+      
+    );
   }
 
 });
