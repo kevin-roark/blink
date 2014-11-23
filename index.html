@@ -26,14 +26,14 @@
       <source src="media/babysit.mp4" type="video/mp4" />
     </video>
 
-    <div id="cameraPreview" style="width:320px; height:240px;"></div>
+    <div id="cameraPreview" style="visibility: hidden; position: absolute; right: 0; top: 0; width:320px; height:240px; border: 1px solid green"></div>
 
-    <canvas id="webcamCanvas" width="320" height="240" style="position: absolute; left: 10px; top: 285; border: 1px solid #000;"></canvas>
-    <canvas id="diff" width="320" height="240" style="position: absolute; left: 10px; top: 285; border: 1px solid #000;"></canvas>
+    <canvas id="webcamCanvas" width="320" height="240" style="display: none; position: absolute; left: 285px; top: 285; border: 1px solid blue;"></canvas>
+    <canvas id="diff" width="320" height="240" style="display: none; position: absolute; left: 10px; bottom: 0; border: 1px solid red;"></canvas>
 
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/blinktracker.js"></script>
-    <script src="js/lib/webcam.js"></script>
+    <script src="js/lib/webcam.min.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

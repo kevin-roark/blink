@@ -3,9 +3,9 @@ function search(frame, width, height) {
   var kBlobsSearchBorder = 20;
   var kMinBlobsFound = 2;
   var kMaxBlobsFound = 25;
-  var kMinEyeXSep = 40;
-  var kMaxEyeXSep = 60;
-  var kMaxEyeYSep = 40;
+  var kMinEyeXSep = 15;
+  var kMaxEyeXSep = 80;
+  var kMaxEyeYSep = 55;
 
   function pixel(x, y) {
   	if (x < 0 || x >= width || y < 0 || y >= height) {
@@ -151,18 +151,32 @@ function search(frame, width, height) {
 
   // Sort blobs
   if (blobs.length < kMinBlobsFound) {
-	  return {error: "No blobs"};
+	  return {error: {message: "No blobs", code: 1}};
   } else if (blobs.length > kMaxBlobsFound) {
-    return {error: "Too many blobs: " + blobs.length};
+    return {error: {message: "Too many blobs: " + blobs.length, code: 2}};
   }
-  blobs.sort(function(a, b) { (b.xmax - b.xmin) * (b.ymax - b.ymin) - (a.xmax - a.xmin) * (a.ymax - a.ymin) });
+  blobs.sort(function(a, b) {
+    (b.xmax - b.xmin) * (b.ymax - b.ymin) - (a.xmax - a.xmin) * (a.ymax - a.ymin);
+  });
+
+  // prune duplicate blobs
+  while (blobs.length >= 2 && blobs[1].xmax == blobs[0].xmax || blobs[1].xmin == blobs[0].xmin) {
+    blobs.splice(1, 1);
+
+    if (blobs.length < kMinBlobsFound) {
+      return {error: {message: "No blobs", code: 1}};
+    }
+  }
+  if (blobs.length < kMinBlobsFound) {
+    return {error: {message: "No blobs", code: 1}};
+  }
 
   // Check dimensions
   var xSep = Math.abs((blobs[0].xmax + blobs[0].xmin) - (blobs[1].xmax + blobs[1].xmin)) / 2;
   var ySep = Math.abs((blobs[0].ymax + blobs[0].ymin) - (blobs[1].ymax + blobs[1].ymin)) / 2;
 
   if (xSep < kMinEyeXSep || xSep > kMaxEyeXSep || ySep > kMaxEyeYSep) {
-	  return {error: "Geometry off, xSep:" + xSep + ", ySep:" + ySep};
+	  return {error: {message: "Geometry off, xSep:" + xSep + ", ySep:" + ySep, code: 3}};
   }
 
   // Find which eye is which
@@ -179,7 +193,7 @@ function search(frame, width, height) {
       y1: blobs[l].ymin - dy,
       y2: blobs[l].ymax + dy
     },
-    rightEye {
+    rightEye: {
       x1: blobs[r].xmin - dx,
       x2: blobs[r].xmax + dx,
       y1: blobs[r].ymin - dy,
@@ -188,9 +202,11 @@ function search(frame, width, height) {
   }
 }
 
+var hasLogged = false;
 onmessage = function(event) {
   var data = event.data;
   if (data.frame == null) { postMessage([-100]); }
+
   var res = search(data.frame, data.width, data.height);
   postMessage(res);
 }

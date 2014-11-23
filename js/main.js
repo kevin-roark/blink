@@ -6,6 +6,8 @@ $(function() {
   var subway = document.querySelector('#subway');
   var babysit = document.querySelector('#babysit');
 
+  var webcamCanvas = document.querySelector('#webcamCanvas');
+
   var vids = [gus, kev, bathroom, subway, babysit];
   var currentVideoIndex = 0;
 
@@ -24,7 +26,18 @@ $(function() {
   }
 
   function start(restarting) {
+    window.blinkProcessor.onLoad();
+    window.blinkProcessor.foundEyesCallback = function() {
+      cycleToNextVideo();
+    }
+
     Webcam.attach('#cameraPreview');
+    Webcam.on('load', function() {
+        setInterval(function() {
+          takeSnapshot();
+          window.blinkProcessor.processFrame();
+        }, 40);
+    });
 
     $(vids[0]).show();
 
@@ -38,7 +51,7 @@ $(function() {
 
   $('body').keypress(function(event) {
     if (event.which == 32) { // spacebar
-      cycleToNextVideo();
+      //cycleToNextVideo();
     }
   });
 
@@ -55,8 +68,13 @@ $(function() {
 
   function takeSnapshot() {
     Webcam.snap(function(data_uri) {
-      
-    );
+      var ctx = webcamCanvas.getContext('2d');
+      var img = new Image;
+      img.onload = function() {
+        ctx.drawImage(img, 0, 0); // Or at whatever offset you like
+      };
+      img.src = data_uri;
+    });
   }
 
 });

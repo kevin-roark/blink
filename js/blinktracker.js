@@ -3,6 +3,7 @@
 // HTML 5 implementation inspired by Paul Rouget's motion tracker work
 
 window.blinkProcessor = {
+  loaded: false,
   worker: null,
   inCanvas: null,
   inCtx: null,
@@ -11,24 +12,11 @@ window.blinkProcessor = {
   lastFrame: null,
   videoWidth: null,
   videoHeight: null,
-  widthScale: 2,
-  heightScale: 2,
+  widthScale: 1,
+  heightScale: 1,
   leftEye: null,
   rightEye: null,
-  kEyeBoxDisarmTime: 1200,
-
-  timerCallback: function() {
-	  if (this.video.paused) {
-	    return;
-	  }
-
-    this.processFrame();
-
-    var self = this;
-    setTimeout(function () {
-      self.timerCallback();
-    }, 0);
-  },
+  kEyeBoxDisarmTime: 150,
 
   onLoad: function() {
     this.inCanvas = document.getElementById("webcamCanvas");
@@ -41,10 +29,15 @@ window.blinkProcessor = {
 
     var self = this;
     this.worker.onmessage = function(event) {
-	    if (event.data[0] == 0) {
-  	    self.foundEyes(event.data.slice(1));
-  	  }
+      if (event.data.error) {
+        //if (event.data.error.code == 3) console.log(event.data.error.message);
+      }
+      else {
+        self.foundEyes(event.data);
+      }
     };
+
+    this.loaded = true;
   },
 
   getVideoFrame: function() {
@@ -80,6 +73,8 @@ window.blinkProcessor = {
   },
 
   processFrame: function() {
+    if (!this.loaded) return;
+
     var currentFrame = this.getVideoFrame();
 
     if (this.lastFrame == null) {
@@ -89,7 +84,7 @@ window.blinkProcessor = {
 
     // Get the difference frame
     var diffFrame = this.diffFrame(currentFrame, this.lastFrame);
-    this.putGreyFrame(diffFrame, 0, 0);
+    //this.putGreyFrame(diffFrame, 0, 0);
 	  this.lastFrame = currentFrame;
 
     // Locate eyes in worker thread
@@ -108,6 +103,10 @@ window.blinkProcessor = {
 	  // Store found eye geometry
     this.leftEye = result.leftEye;
     this.rightEye = result.rightEye;
+
+    if (this.foundEyesCallback) {
+      this.foundEyesCallback();
+    }
 
     // Disarm
     var self = this;
