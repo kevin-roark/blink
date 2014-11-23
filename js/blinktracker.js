@@ -16,7 +16,7 @@ window.blinkProcessor = {
   heightScale: 1,
   leftEye: null,
   rightEye: null,
-  kEyeBoxDisarmTime: 150,
+  kEyeBoxDisarmTime: 200,
 
   onLoad: function() {
     this.inCanvas = document.getElementById("webcamCanvas");
@@ -62,7 +62,7 @@ window.blinkProcessor = {
                      Math.abs(frame1.data[i * 4 + 1] - frame2.data[i * 4 + 1]) +
                      Math.abs(frame1.data[i * 4 + 2] - frame2.data[i * 4 + 2])) / 3;
       // Threshold and invert
-      if (newFrame[i] > 20) {
+      if (newFrame[i] > 15) {
   	    newFrame[i] = 0;
   	  } else {
   		  newFrame[i] = 255;
@@ -84,7 +84,7 @@ window.blinkProcessor = {
 
     // Get the difference frame
     var diffFrame = this.diffFrame(currentFrame, this.lastFrame);
-    //this.putGreyFrame(diffFrame, 0, 0);
+    this.putGreyFrame(diffFrame, 0, 0);
 	  this.lastFrame = currentFrame;
 
     // Locate eyes in worker thread

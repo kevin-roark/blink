@@ -9,7 +9,7 @@ $(function() {
 
   var webcamCanvas = document.querySelector('#webcamCanvas');
 
-  var vids = [gus, kev, bathroom, subway, babysit, grandpa];
+  var vids = [kev, bathroom, subway, babysit, grandpa];
   var currentVideoIndex = 0;
 
   var numMedia = vids.length;
@@ -37,7 +37,7 @@ $(function() {
         setInterval(function() {
           takeSnapshot();
           window.blinkProcessor.processFrame();
-        }, 40);
+        }, 35);
     });
 
     $(vids[0]).show();
