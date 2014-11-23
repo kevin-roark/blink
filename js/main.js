@@ -5,10 +5,11 @@ $(function() {
   var bathroom = document.querySelector('#bathroom');
   var subway = document.querySelector('#subway');
   var babysit = document.querySelector('#babysit');
+  var grandpa = document.querySelector('#grandpa');
 
   var webcamCanvas = document.querySelector('#webcamCanvas');
 
-  var vids = [gus, kev, bathroom, subway, babysit];
+  var vids = [gus, kev, bathroom, subway, babysit, grandpa];
   var currentVideoIndex = 0;
 
   var numMedia = vids.length;
