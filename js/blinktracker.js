@@ -17,6 +17,7 @@ window.blinkProcessor = {
   leftEye: null,
   rightEye: null,
   kEyeBoxDisarmTime: 200,
+  debugging: false,
 
   onLoad: function() {
     this.inCanvas = document.getElementById("webcamCanvas");
@@ -25,7 +26,9 @@ window.blinkProcessor = {
     this.diffCtx = this.diffCanvas.getContext("2d");
     this.videoWidth = this.inCanvas.width / this.widthScale;
     this.videoHeight = this.inCanvas.height / this.heightScale;
-    this.worker = new Worker("js/findeyes.js");
+
+    var workerPath = this.debugging? "/js/findeyes.js" : "/blink/js/findeyes.js";
+    this.worker = new Worker(workerPath);
 
     var self = this;
     this.worker.onmessage = function(event) {
