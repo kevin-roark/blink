@@ -29,6 +29,8 @@ window.blinkProcessor = {
 
     var self = this;
     this.worker.onmessage = function(event) {
+      console.log(event.data);
+
       if (event.data.error) {
         //if (event.data.error.code == 3) console.log(event.data.error.message);
       }
