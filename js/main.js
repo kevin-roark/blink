@@ -9,7 +9,7 @@ $(function() {
 
   var webcamCanvas = document.querySelector('#webcamCanvas');
 
-  var vids = [kev, bathroom, subway, babysit, grandpa];
+  var vids = [gus, kev, bathroom, subway, babysit, grandpa];
   var currentVideoIndex = 0;
 
   var numMedia = vids.length;
