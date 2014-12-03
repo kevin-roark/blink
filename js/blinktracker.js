@@ -16,7 +16,7 @@ window.blinkProcessor = {
   heightScale: 1,
   leftEye: null,
   rightEye: null,
-  kEyeBoxDisarmTime: 200,
+  kEyeBoxDisarmTime: 250,
   debugging: false,
 
   onLoad: function() {
