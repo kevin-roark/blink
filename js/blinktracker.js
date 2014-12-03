@@ -25,12 +25,10 @@ window.blinkProcessor = {
     this.diffCtx = this.diffCanvas.getContext("2d");
     this.videoWidth = this.inCanvas.width / this.widthScale;
     this.videoHeight = this.inCanvas.height / this.heightScale;
-    this.worker = new Worker("/js/findeyes.js");
+    this.worker = new Worker("js/findeyes.js");
 
     var self = this;
     this.worker.onmessage = function(event) {
-      console.log(event.data);
-
       if (event.data.error) {
         //if (event.data.error.code == 3) console.log(event.data.error.message);
       }
