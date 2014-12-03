@@ -52,7 +52,7 @@ $(function() {
 
   $('body').keypress(function(event) {
     if (event.which == 32) { // spacebar
-      //cycleToNextVideo();
+      cycleToNextVideo();
     }
   });
 
