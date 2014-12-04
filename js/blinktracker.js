@@ -87,7 +87,7 @@ window.blinkProcessor = {
 
     // Get the difference frame
     var diffFrame = this.diffFrame(currentFrame, this.lastFrame);
-    this.putGreyFrame(diffFrame, 0, 0);
+    //this.putGreyFrame(diffFrame, 0, 0);
 	  this.lastFrame = currentFrame;
 
     // Locate eyes in worker thread
