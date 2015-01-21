@@ -1,11 +1,12 @@
+
 function search(frame, width, height) {
-  var kMaxBlobsToFind = 30;
-  var kBlobsSearchBorder = 20;
-  var kMinBlobsFound = 2;
-  var kMaxBlobsFound = 25;
-  var kMinEyeXSep = 15;
-  var kMaxEyeXSep = 80;
-  var kMaxEyeYSep = 55;
+  var MAX_BLOBS_TO_FIND = 30;
+  var BLOB_SEARCH_BORDER = 20;
+  var MIN_BLOBS_FOUND = 2;
+  var MAX_BLOBS_FOUND = 25;
+  var MIN_HOR_EYE_SEP = 15;
+  var MAX_HOR_EYE_SEP = 80;
+  var MAX_VERT_Y_SEP = 55;
 
   function pixel(x, y) {
   	if (x < 0 || x >= width || y < 0 || y >= height) {
@@ -18,7 +19,7 @@ function search(frame, width, height) {
   function tracePerim(i, j) {
 	  var x = i;
 	  var y = j + 1;
-	  var xmin = i
+	  var xmin = i;
 	  var xmax = i;
 	  var ymin = j;
 	  var ymax = j;
@@ -133,26 +134,26 @@ function search(frame, width, height) {
   }
 
   // Find blobs
-  var blobs = new Array();
-  for (var h = kBlobsSearchBorder; h < height - kBlobsSearchBorder; h++) {
-	  if (blobs.length >= kMaxBlobsToFind) break;
+  var blobs = [];
+  for (var h = BLOB_SEARCH_BORDER; h < height - BLOB_SEARCH_BORDER; h++) {
+	  if (blobs.length >= MAX_BLOBS_TO_FIND) break;
 
-  	for (var j = kBlobsSearchBorder; j < width - kBlobsSearchBorder; j++) {
+  	for (var j = BLOB_SEARCH_BORDER; j < width - BLOB_SEARCH_BORDER; j++) {
   	  if (pixel(j, h) == 0 && pixel(j, h-1) != 0) {
         var pos = tracePerim(j, h);
 
   	    if ((pos.xmax - pos.xmin) * (pos.ymax - pos.ymin) > 5) {
   		    blobs.push(pos);
-  		    if (blobs.length >= kMaxBlobsToFind) break;
+  		    if (blobs.length >= MAX_BLOBS_TO_FIND) break;
   		  }
   	  }
   	}
   }
 
   // Sort blobs
-  if (blobs.length < kMinBlobsFound) {
-	  return {error: {message: "No blobs", code: 1}};
-  } else if (blobs.length > kMaxBlobsFound) {
+  if (blobs.length < MIN_BLOBS_FOUND) {
+	  return {error: {message: "Too few blobs: " + blobs.length, code: 1}};
+  } else if (blobs.length > MAX_BLOBS_FOUND) {
     return {error: {message: "Too many blobs: " + blobs.length, code: 2}};
   }
   blobs.sort(function(a, b) {
@@ -163,11 +164,11 @@ function search(frame, width, height) {
   while (blobs.length >= 2 && blobs[1].xmax == blobs[0].xmax || blobs[1].xmin == blobs[0].xmin) {
     blobs.splice(1, 1);
 
-    if (blobs.length < kMinBlobsFound) {
+    if (blobs.length < MIN_BLOBS_FOUND) {
       return {error: {message: "No blobs", code: 1}};
     }
   }
-  if (blobs.length < kMinBlobsFound) {
+  if (blobs.length < MIN_BLOBS_FOUND) {
     return {error: {message: "No blobs", code: 1}};
   }
 
@@ -175,7 +176,7 @@ function search(frame, width, height) {
   var xSep = Math.abs((blobs[0].xmax + blobs[0].xmin) - (blobs[1].xmax + blobs[1].xmin)) / 2;
   var ySep = Math.abs((blobs[0].ymax + blobs[0].ymin) - (blobs[1].ymax + blobs[1].ymin)) / 2;
 
-  if (xSep < kMinEyeXSep || xSep > kMaxEyeXSep || ySep > kMaxEyeYSep) {
+  if (xSep < MIN_HOR_EYE_SEP || xSep > MAX_HOR_EYE_SEP || ySep > MAX_VERT_Y_SEP) {
 	  return {error: {message: "Geometry off, xSep:" + xSep + ", ySep:" + ySep, code: 3}};
   }
 
