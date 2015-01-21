@@ -25,7 +25,7 @@ function search(frame, width, height) {
 	  var ymax = j;
     var dir = 1;
 
-    for (count = 0; count < 300; count++) {
+    for (var count = 0; count < 300; count++) {
 	    var found = false;
   	  if ((x == i) && (y == j)) break; // gone full circle
 
